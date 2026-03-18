@@ -164,13 +164,13 @@ base = alt.Chart(df).encode(
         "residual_duration:Q",
         title="Duration résiduelle",
         scale=alt.Scale(domain=[0, x_max], nice=False),
-        axis=alt.Axis(values=list(range(0, x_max + 1)), labelExpr="datum.value + 'y'"),
+        axis=alt.Axis(values=list(range(0, x_max + 1)), labelExpr="datum.value + 'y'", labelFontSize=16, titleFontSize=19),
     ),
     y=alt.Y(
         "spread_market:Q",
         title="Spread marché",
         scale=alt.Scale(domain=[y_min, y_max], nice=False),
-        axis=alt.Axis(values=list(range(y_min, y_max + 1, 5))),
+        axis=alt.Axis(values=list(range(y_min, y_max + 1, 5)), labelFontSize=16, titleFontSize=19),
     ),
 )
 
@@ -205,7 +205,7 @@ line_labels = alt.Chart(label_df).mark_text(dx=12, dy=-6, fontSize=15, fontWeigh
 chart = (
     (points + lines + line_labels)
     .properties(width=1150, height=650)
-    .configure_axis(gridColor="#d9dee7", domainColor="#475569", tickColor="#475569", labelColor="#475569", titleColor="#475569")
+     .configure_axis(gridColor="#d9dee7", domainColor="#475569", tickColor="#475569", labelColor="#475569", titleColor="#475569", labelFontSize=16, titleFontSize=19)
     .configure_view(stroke=None)
     .interactive()
 )
@@ -230,4 +230,5 @@ with right:
         )
 
 st.caption("Colonnes utilisées : C = Entité, D = Rating ZKB, O = Duration résiduelle, S = Spread marché.")
+
 
