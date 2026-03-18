@@ -11,6 +11,7 @@ import streamlit as st
 st.set_page_config(page_title="Utilities CHF Streamlit", layout="wide")
 
 DATA_PATH = Path(__file__).resolve().parent / "Market data utilities.xlsx"
+LOGO_PATH = Path(__file__).resolve().parent / "Tradition_LOGO.png"
 
 TARGET_ISSUERS = [
     "IWB IND WERKE BASEL",
@@ -133,6 +134,9 @@ def make_line_data(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     return pd.DataFrame(trend_rows), pd.DataFrame(label_rows)
 
 
+if LOGO_PATH.exists():
+    st.image(str(LOGO_PATH), width=360)
+
 st.title("Comparatif des spreads sur le marché secondaire obligataire : entreprises d'énergie")
 
 if not DATA_PATH.exists():
@@ -230,5 +234,6 @@ with right:
         )
 
 st.caption("Colonnes utilisées : C = Entité, D = Rating ZKB, O = Duration résiduelle, S = Spread marché.")
+
 
 
