@@ -160,20 +160,29 @@ if df.empty:
 legend_df = make_legend_df(df, issuer_ratings, issuer_colors)
 trend_source, label_df = make_line_data(df)
 
+chart_df = df[["entity", "rating_zkb", "residual_duration", "spread_market"]].rename(
+    columns={
+        "entity": "Entite",
+        "rating_zkb": "Rating ZKB",
+        "residual_duration": "Duration residuelle",
+        "spread_market": "Spread marche",
+    }
+)
+
 x_max = max(8, int(df["residual_duration"].max().round()))
 y_min = int(max(20, (df["spread_market"].min() // 5) * 5))
 y_max = int(((df["spread_market"].max() + 4) // 5 + 1) * 5)
 
-base = alt.Chart(df).encode(
+base = alt.Chart(chart_df).encode(
     x=alt.X(
-        "residual_duration:Q",
-        title="Duration résiduelle",
+        "Duration residuelle:Q",
+        title="Duration residuelle",
         scale=alt.Scale(domain=[0, x_max], nice=False),
         axis=alt.Axis(values=list(range(0, x_max + 1)), labelExpr="datum.value + 'y'", labelFontSize=16, titleFontSize=19),
     ),
     y=alt.Y(
-        "spread_market:Q",
-        title="Spread marché",
+        "Spread marche:Q",
+        title="Spread marche",
         scale=alt.Scale(domain=[y_min, y_max], nice=False),
         axis=alt.Axis(values=list(range(y_min, y_max + 1, 5)), labelFontSize=16, titleFontSize=19),
     ),
@@ -181,15 +190,15 @@ base = alt.Chart(df).encode(
 
 points = base.mark_circle(size=115, opacity=0.95).encode(
     color=alt.Color(
-        "entity:N",
+        "Entite:N",
         scale=alt.Scale(domain=legend_df["entity"].tolist(), range=legend_df["color"].tolist()),
         legend=None,
     ),
     tooltip=[
-        alt.Tooltip("entity:N", title="Entité"),
-        alt.Tooltip("rating_zkb:N", title="Rating ZKB"),
-        alt.Tooltip("residual_duration:Q", title="Duration résiduelle", format=".2f"),
-        alt.Tooltip("spread_market:Q", title="Spread marché", format=".2f"),
+        alt.Tooltip("Entite:N", title="Entite"),
+        alt.Tooltip("Rating ZKB:N", title="Rating ZKB"),
+        alt.Tooltip("Duration residuelle:Q", title="Duration residuelle", format=".2f"),
+        alt.Tooltip("Spread marche:Q", title="Spread marche", format=".2f"),
     ],
 )
 
