@@ -75,7 +75,7 @@ def fit_line(xs: pd.Series, ys: pd.Series) -> tuple[float, float]:
 
 
 @st.cache_data
-def load_data(path: str) -> tuple[pd.DataFrame, dict[str, str], dict[str, str]]:
+def load_data(path: str, file_mtime: float) -> tuple[pd.DataFrame, dict[str, str], dict[str, str]]:
     raw = pd.read_excel(path)
     df = pd.DataFrame(
         {
@@ -143,7 +143,8 @@ if not DATA_PATH.exists():
     st.error(f"Fichier introuvable : {DATA_PATH}")
     st.stop()
 
-all_df, issuer_ratings, issuer_colors = load_data(str(DATA_PATH))
+file_mtime = DATA_PATH.stat().st_mtime
+all_df, issuer_ratings, issuer_colors = load_data(str(DATA_PATH), file_mtime)
 
 focus_shortlist = st.toggle("Focus shortlist", value=False, help="Affiche uniquement la shortlist d'émetteurs mise en avant.")
 
